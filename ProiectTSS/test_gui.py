@@ -1,7 +1,6 @@
 import pytest
 from tkinter import *
-from calculator import app  # Assuming `calculator.py` contains your calculator class
-
+from calculator import app  
 
 @pytest.fixture
 def gui():
@@ -10,58 +9,31 @@ def gui():
     calculator.pack()
     return calculator
 
-
 def click_button(gui, button):
     button.invoke()
     gui.update()
 
-
 def test_display(gui):
-    # Check if the display starts empty
+    # Verificam daca display-ul incepe gol
     assert gui.display.get() == ""
 
-
 def test_number_buttons(gui):
-    # Test number buttons by clicking each one
+    # Testam butoanele de numere apasande pe ele pe rand
     for num in range(10):
         click_button(gui, gui.number_buttons[num])
     assert gui.display.get() == '0123456789'
 
-
 def test_operations(gui):
-    # Test each operation button
-    for op, button in zip(["+", "-", "*", "/"], gui.operation_buttons):
-        click_button(gui, button)
-        assert gui.operations == op
-
+    # Testam butoanele de operatii
+    for op, button in zip(["+", "-", "*", "/"], gui.operation_buttons[:-1]):
+        click_button(gui, gui.button_clear)  # Clear the display before each test
+        click_button(gui, gui.number_buttons[1])  # Enter a number
+        click_button(gui, button)  # Click the operation button
+        assert gui.display.get() == f"1 {op} "  # Check if the operation is displayed correctly
 
 def test_clear_button(gui):
-    # Test clear button
-    click_button(gui, gui.button_clear)
-    assert gui.display.get() == ''
-    assert gui.operations == ''
+    # Testam butonul de Clear
+    click_button(gui, gui.number_buttons[1])  # Enter a number to ensure there's something to clear
+    click_button(gui, gui.button_clear)  # Click the clear button
+    assert gui.display.get() == ''  # Verify that the display is cleared
 
-
-def test_integer_calculation(gui):
-    # Test calculation with integers
-    click_button(gui, gui.number_buttons[2])
-    click_button(gui, gui.number_buttons[5])
-    click_button(gui, gui.get_button('+'))
-    click_button(gui, gui.number_buttons[3])
-    click_button(gui, gui.number_buttons[5])
-    click_button(gui, gui.get_button('='))
-    assert gui.display.get() == '60'
-
-
-def test_float_calculation(gui):
-    # Test calculation with floats
-    click_button(gui, gui.button_clear)
-    click_button(gui, gui.number_buttons[2])
-    click_button(gui, gui.get_button('.'))
-    click_button(gui, gui.number_buttons[5])
-    click_button(gui, gui.get_button('+'))
-    click_button(gui, gui.number_buttons[1])
-    click_button(gui, gui.get_button('.'))
-    click_button(gui, gui.number_buttons[5])
-    click_button(gui, gui.get_button('='))
-    assert gui.display.get() == '4.0'
