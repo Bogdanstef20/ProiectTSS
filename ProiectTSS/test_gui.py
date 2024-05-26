@@ -26,14 +26,14 @@ def test_number_buttons(gui):
 def test_operations(gui):
     # Testam butoanele de operatii
     for op, button in zip(["+", "-", "*", "/"], gui.operation_buttons[:-1]):
-        click_button(gui, gui.button_clear)  # Clear the display before each test
-        click_button(gui, gui.number_buttons[1])  # Enter a number
-        click_button(gui, button)  # Click the operation button
-        assert gui.display.get() == f"1 {op} "  # Check if the operation is displayed correctly
+        click_button(gui, gui.button_clear)  # Stergem display-ul inainte de fiecare test
+        click_button(gui, gui.number_buttons[1])  # Punem un numar
+        click_button(gui, button)  # Apasam un operator
+        assert gui.display.get() == f"1 {op} "  # Verificam daca operatia este corect afisata
 
 def test_clear_button(gui):
     # Testam butonul de Clear
-    click_button(gui, gui.number_buttons[1])  # Enter a number to ensure there's something to clear
-    click_button(gui, gui.button_clear)  # Click the clear button
-    assert gui.display.get() == ''  # Verify that the display is cleared
+    click_button(gui, gui.number_buttons[1])  # Introducem un numar pentru a avea ceva de sters
+    click_button(gui, gui.button_clear)  # Apasam butonul de clear
+    assert gui.display.get() == ''  # Verificam daca dsiplay-ul este gol
 
