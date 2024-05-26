@@ -104,7 +104,7 @@ def test_float_overflow():
     #Test dapasire limita float
     calculator.display.set(str(Decimal('1e400') * Decimal('1e400')))
     calculator.result(calculator.display)
-    assert calculator.display.get() == "Inf"
+    assert calculator.display.get() == "inf"
 
 def test_round_float():
     calculator = app()
