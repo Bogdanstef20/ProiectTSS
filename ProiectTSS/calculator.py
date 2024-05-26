@@ -53,9 +53,10 @@ class app(Frame):
                 self.operation_buttons.append(btnEquals)
             else:
                 button_obj = Button(self.operations, text=op,
-                                    command=lambda appObj=self.display, s=" %s " % op: appObj.set(appObj.get() + s))
+                                command=lambda appObj=self.display, s=" %s " % op: appObj.set(appObj.get() + s))
                 button_obj.pack(side=LEFT, expand=YES, fill=BOTH)
                 self.operation_buttons.append(button_obj)
+
 
         self.button_dot = Button(self.numbers, text=".",
                                  command=lambda appObj=self.display, i=".": appObj.set(appObj.get() + i))
@@ -65,7 +66,7 @@ class app(Frame):
         self.button_round.pack(side=LEFT, expand=YES, fill=BOTH)
 
     def get_button(self, label):
-        for widget in self.winfo_children():
+        for widget in self.operations.winfo_children():
             if isinstance(widget, Button) and widget['text'] == str(label):
                 return widget
         raise ValueError(f"Button {label} not found")
@@ -83,14 +84,15 @@ class app(Frame):
 
     def result(self, display):
         try:
-            result_value = eval(display.get())
-            if result_value == float('inf'):
-                display.set('Inf')
-            else:
-                display.set(str(result_value))
+            expression = display.get()
+            print(f"Evaluating expression: {expression}")  # Debug print
+            result_value = eval(expression)
+            display.set(str(result_value))
         except ZeroDivisionError:
             display.set('UNDEFINED')
-
+        except Exception as e:
+            print(f"Error: {e}")  # Debug print
+            display.set('ERROR')
 
 
 if __name__ == '__main__':
